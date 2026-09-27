@@ -1,0 +1,49 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "number": {
+      "type": "number"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "gdh": {
+      "type": "string"
+    },
+    "classification": {
+      "type": "string"
+    },
+    "urgency": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string"
+    },
+    "vessel": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "envoye"
+      ],
+      "default": "brouillon"
+    }
+  },
+  "required": [
+    "type"
+  ]
+}

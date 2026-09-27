@@ -1,0 +1,46 @@
+{
+  "name": "UnitSettings",
+  "type": "object",
+  "properties": {
+    "unit_name": {
+      "type": "string"
+    },
+    "place": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "string"
+    },
+    "ref_suffix": {
+      "type": "string"
+    },
+    "commander": {
+      "type": "string"
+    },
+    "tel": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "weekly_to": {
+      "type": "string"
+    },
+    "weekly_info": {
+      "type": "string"
+    },
+    "movement_to": {
+      "type": "string"
+    },
+    "movement_info": {
+      "type": "string"
+    },
+    "next_number": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "required": [
+    "unit_name"
+  ]
+}
