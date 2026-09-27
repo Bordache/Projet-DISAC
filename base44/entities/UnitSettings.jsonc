@@ -38,6 +38,10 @@
     "next_number": {
       "type": "number",
       "default": 1
+    },
+    "stamp": {
+      "type": "string",
+      "description": "URI du cachet officiel (fichier priv\u00e9)"
     }
   },
   "required": [

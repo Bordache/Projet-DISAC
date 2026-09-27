@@ -1,9 +1,11 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Printer, Pencil, Copy, Trash2, Send, Loader2 } from 'lucide-react';
+import { ArrowLeft, Printer, Pencil, Copy, Trash2, Send, Loader2, Download, ClipboardCopy } from 'lucide-react';
+import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 import { useSettings } from '@/hooks/useUnit';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
+import { messageToText, downloadText, fileSlug } from '@/lib/exportMessage';
 import MessagePreview from '@/components/message/MessagePreview';
 
 const btn = 'inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm hover:bg-secondary transition';
@@ -17,6 +19,12 @@ export default function MessageView() {
 
   if (!m) return <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mx-auto mt-20" />;
   const T = MESSAGE_TYPES[m.type];
+
+  const exportTxt = () => downloadText(`${fileSlug(m)}.txt`, messageToText(m, settings));
+  const copyText = async () => {
+    await navigator.clipboard.writeText(messageToText(m, settings));
+    toast.success('Message copié — prêt à coller dans WhatsApp');
+  };
 
   const toggleSent = async () => {
     await base44.entities.Message.update(id, { status: m.status === 'envoye' ? 'brouillon' : 'envoye' });
@@ -40,6 +48,8 @@ export default function MessageView() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={() => window.print()} className={`${btn} bg-primary text-primary-foreground border-primary hover:bg-primary/90`}><Printer className="w-4 h-4" />PDF / Imprimer</button>
+            <button onClick={exportTxt} className={btn}><Download className="w-4 h-4" />Exporter .txt</button>
+            <button onClick={copyText} className={btn}><ClipboardCopy className="w-4 h-4" />Copier</button>
             <button onClick={toggleSent} className={btn}><Send className="w-4 h-4" />{m.status === 'envoye' ? 'Envoyé ✓' : 'Marquer envoyé'}</button>
             <Link to={`/rediger/${m.type}?id=${id}`} className={btn}><Pencil className="w-4 h-4" />Modifier</Link>
             <Link to={`/rediger/${m.type}?from=${id}`} className={btn}><Copy className="w-4 h-4" />Reprendre</Link>

@@ -4,7 +4,16 @@ import { base44 } from '@/api/base44Client';
 export function useSettings() {
   return useQuery({
     queryKey: ['settings'],
-    queryFn: async () => (await base44.entities.UnitSettings.filter({}, { limit: 1 })).items[0] || null,
+    queryFn: async () => {
+      const s = (await base44.entities.UnitSettings.filter({}, { limit: 1 })).items[0] || null;
+      if (s?.stamp) {
+        try {
+          const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: s.stamp });
+          s.stampUrl = signed_url;
+        } catch {}
+      }
+      return s;
+    },
   });
 }
 

@@ -1,3 +1,4 @@
+import { Image } from '@/components/ui/image';
 import { MISSION_CHAPTERS } from '@/lib/messageTypes';
 import { fmtDate, refLine } from '@/lib/format';
 
@@ -19,7 +20,8 @@ export default function MissionDoc({ message, settings }) {
       ))}
       <div className="mt-10 ml-auto w-fit text-center">
         <div>Fait à {s.place}, le {fmtDate(message.date)}</div>
-        <div className="font-bold mt-6 uppercase">{s.commander}</div>
+        {s.stampUrl && <Image src={s.stampUrl} alt="Cachet" className="w-24 h-24 object-contain mx-auto mt-3" fittingType="fit" />}
+        <div className="font-bold mt-3 uppercase">{s.commander}</div>
       </div>
     </div>
   );

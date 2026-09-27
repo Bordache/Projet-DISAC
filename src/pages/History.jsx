@@ -1,13 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, FolderDown } from 'lucide-react';
+import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
+import { useSettings } from '@/hooks/useUnit';
+import { exportToFolder } from '@/lib/exportMessage';
 import MessageRow from '@/components/MessageRow';
 
 export default function History() {
   const [type, setType] = useState('all');
   const [items, setItems] = useState(null);
   const [next, setNext] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const { data: settings } = useSettings();
+
+  const exportAll = async () => {
+    setExporting(true);
+    try {
+      const all = [];
+      let cursor;
+      do {
+        const page = await base44.entities.Message.filter({}, { sort: '-date', limit: 100, cursor });
+        all.push(...page.items);
+        cursor = page.has_more ? page.next_cursor : null;
+      } while (cursor);
+      const res = await exportToFolder(all, settings);
+      if (res?.aborted) return;
+      toast.success(res.folder ? `${res.count} messages enregistrés dans le dossier` : `${res.count} messages téléchargés`);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const load = async (cursor) => {
     const page = await base44.entities.Message.filter(type === 'all' ? {} : { type }, { sort: '-date', limit: 30, cursor });
@@ -23,7 +46,13 @@ export default function History() {
 
   return (
     <div>
-      <h1 className="font-heading text-4xl tracking-tight">Historique</h1>
+      <div className="flex items-end justify-between gap-4">
+        <h1 className="font-heading text-4xl tracking-tight">Historique</h1>
+        <button onClick={exportAll} disabled={exporting} className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2.5 text-sm disabled:opacity-60">
+          {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <FolderDown className="w-4 h-4" />}
+          <span className="hidden sm:inline">Exporter dans un dossier</span>
+        </button>
+      </div>
       <div className="flex gap-2 overflow-x-auto mt-6 pb-2 -mx-5 px-5">
         {chip('all', 'TOUS')}
         {Object.entries(MESSAGE_TYPES).map(([k, t]) => chip(k, t.name))}

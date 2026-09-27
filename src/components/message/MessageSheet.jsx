@@ -1,4 +1,5 @@
 import MessageBody from '@/components/message/MessageBody';
+import { Image } from '@/components/ui/image';
 import { MESSAGE_TYPES, CLASSIFICATIONS, URGENCIES } from '@/lib/messageTypes';
 import { gdh, refLine } from '@/lib/format';
 
@@ -52,7 +53,12 @@ export default function MessageSheet({ message, settings }) {
           </tr>
           <tr className="h-28">
             <td className={cell}>Grade, nom et signature du rédacteur ou l'opérateur</td>
-            <td className={cell}><div>{s.unit_name}</div><div>Tel : {s.tel}</div><div>Email : {s.email}</div></td>
+            <td className={cell}>
+              <div>{s.unit_name}</div>
+              <div>Tel : {s.tel}</div>
+              <div>Email : {s.email}</div>
+              {s.stampUrl && <div className="mt-2 flex justify-end"><Image src={s.stampUrl} alt="Cachet" className="w-20 h-20 object-contain" fittingType="fit" /></div>}
+            </td>
           </tr>
         </tbody>
       </table>
