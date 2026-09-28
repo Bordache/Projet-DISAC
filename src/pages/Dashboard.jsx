@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { PenLine } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { useSettings } from '@/hooks/useUnit';
 import Deadlines from '@/components/dashboard/Deadlines';
 import FleetSummary from '@/components/dashboard/FleetSummary';
@@ -11,7 +11,7 @@ export default function Dashboard() {
   const { data: settings } = useSettings();
   const { data: recent = [] } = useQuery({
     queryKey: ['recent'],
-    queryFn: async () => (await base44.entities.Message.filter({}, { sort: '-created_date', limit: 5 })).items,
+    queryFn: async () => (await db.messages.filter({}, { sort: '-created_date', limit: 5 })).items,
   });
   return (
     <div className="space-y-10">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { useVessels } from '@/hooks/useUnit';
 import VesselDialog from '@/components/fleet/VesselDialog';
 
@@ -11,14 +11,14 @@ export default function Fleet() {
   const [edit, setEdit] = useState(undefined);
 
   const save = async (data) => {
-    if (edit) await base44.entities.Vessel.update(edit.id, data);
-    else await base44.entities.Vessel.create(data);
+    if (edit) await db.vessels.update(edit.id, data);
+    else await db.vessels.create(data);
     qc.invalidateQueries({ queryKey: ['vessels'] });
     setEdit(undefined);
   };
   const remove = async (v) => {
     if (!window.confirm(`Supprimer ${v.name} ?`)) return;
-    await base44.entities.Vessel.delete(v.id);
+    await db.vessels.delete(v.id);
     qc.invalidateQueries({ queryKey: ['vessels'] });
   };
 

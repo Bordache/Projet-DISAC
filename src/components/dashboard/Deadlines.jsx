@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Check, Clock } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
 import { weekRange, fmtDate } from '@/lib/format';
 
@@ -11,7 +11,7 @@ export default function Deadlines() {
   const { monday, sunday } = weekRange();
   const { data: counts } = useQuery({
     queryKey: ['deadlines', monday],
-    queryFn: () => Promise.all(DUE.map((type) => base44.entities.Message.count({ type, date: { $gte: monday, $lte: sunday } }))),
+    queryFn: () => Promise.all(DUE.map((type) => db.messages.count({ type, date: { $gte: monday, $lte: sunday } }))),
   });
   return (
     <section>

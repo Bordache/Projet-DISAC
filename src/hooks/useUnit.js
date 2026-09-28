@@ -1,16 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { db, getSettings, getStampUrl } from '@/lib/localDb';
 
 export function useSettings() {
   return useQuery({
     queryKey: ['settings'],
     queryFn: async () => {
-      const s = (await base44.entities.UnitSettings.filter({}, { limit: 1 })).items[0] || null;
+      const s = await getSettings();
       if (s?.stamp) {
-        try {
-          const { signed_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: s.stamp });
-          s.stampUrl = signed_url;
-        } catch {}
+        try { s.stampUrl = await getStampUrl(); } catch {}
       }
       return s;
     },
@@ -20,6 +17,6 @@ export function useSettings() {
 export function useVessels() {
   return useQuery({
     queryKey: ['vessels'],
-    queryFn: async () => (await base44.entities.Vessel.filter({}, { sort: 'name', limit: 100 })).items,
+    queryFn: async () => (await db.vessels.filter({}, { sort: 'name', limit: 100 })).items,
   });
 }

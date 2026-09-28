@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Printer, Pencil, Copy, Trash2, Send, Loader2, Download, ClipboardCopy } from 'lucide-react';
 import { toast } from 'sonner';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { useSettings } from '@/hooks/useUnit';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
 import { messageToText, downloadText, fileSlug } from '@/lib/exportMessage';
@@ -15,7 +15,7 @@ export default function MessageView() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: settings } = useSettings();
-  const { data: m } = useQuery({ queryKey: ['message', id], queryFn: () => base44.entities.Message.get(id) });
+  const { data: m } = useQuery({ queryKey: ['message', id], queryFn: () => db.messages.get(id) });
 
   if (!m) return <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mx-auto mt-20" />;
   const T = MESSAGE_TYPES[m.type];
@@ -27,12 +27,12 @@ export default function MessageView() {
   };
 
   const toggleSent = async () => {
-    await base44.entities.Message.update(id, { status: m.status === 'envoye' ? 'brouillon' : 'envoye' });
+    await db.messages.update(id, { status: m.status === 'envoye' ? 'brouillon' : 'envoye' });
     qc.invalidateQueries();
   };
   const remove = async () => {
     if (!window.confirm('Supprimer ce message ?')) return;
-    await base44.entities.Message.delete(id);
+    await db.messages.delete(id);
     qc.invalidateQueries();
     navigate('/historique');
   };

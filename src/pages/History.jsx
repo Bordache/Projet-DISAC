@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Loader2, FolderDown } from 'lucide-react';
 import { toast } from 'sonner';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
 import { useSettings } from '@/hooks/useUnit';
 import { exportToFolder } from '@/lib/exportMessage';
@@ -20,7 +20,7 @@ export default function History() {
       const all = [];
       let cursor;
       do {
-        const page = await base44.entities.Message.filter({}, { sort: '-date', limit: 100, cursor });
+        const page = await db.messages.filter({}, { sort: '-date', limit: 100, cursor });
         all.push(...page.items);
         cursor = page.has_more ? page.next_cursor : null;
       } while (cursor);
@@ -33,7 +33,7 @@ export default function History() {
   };
 
   const load = async (cursor) => {
-    const page = await base44.entities.Message.filter(type === 'all' ? {} : { type }, { sort: '-date', limit: 30, cursor });
+    const page = await db.messages.filter(type === 'all' ? {} : { type }, { sort: '-date', limit: 30, cursor });
     setItems((prev) => (cursor ? [...prev, ...page.items] : page.items));
     setNext(page.has_more ? page.next_cursor : null);
   };

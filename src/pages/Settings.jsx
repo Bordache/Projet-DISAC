@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Upload, Download, Loader2 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { db, getSettings, saveSettings, setStampBlob } from '@/lib/localDb';
 import { useSettings } from '@/hooks/useUnit';
 import { inputCls } from '@/components/editor/FieldInput';
 import { Image } from '@/components/ui/image';
@@ -31,10 +31,8 @@ export default function Settings() {
     if (!file) return;
     setStampBusy(true);
     try {
-      const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
-      let url;
-      try { ({ signed_url: url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri })); } catch {}
-      setForm({ ...form, stamp: file_uri, stampUrl: url });
+      const url = await setStampBlob(file);
+      setForm({ ...form, stamp: 'local', stampUrl: url });
       toast.success('Cachet ajouté');
     } catch {
       toast.error('Échec du téléversement');
@@ -43,13 +41,11 @@ export default function Settings() {
   };
 
   const exportBackup = async () => {
-    const [s, v, msg] = await Promise.all([
-      base44.entities.UnitSettings.filter({}, { limit: 1 }),
-      base44.entities.Vessel.filter({}, { limit: 100 }),
-      base44.entities.Message.filter({}, { limit: 1000, sort: '-date' }),
-    ]);
+    const s = await getSettings();
+    const v = (await db.vessels.filter({}, { limit: 100 })).items;
+    const msg = (await db.messages.filter({}, { limit: 1000, sort: '-date' })).items;
     downloadText(`DISAC_sauvegarde_${localISO()}.json`, JSON.stringify({
-      settings: s.items[0], vessels: v.items, messages: msg.items, exported: new Date().toISOString(),
+      settings: s, vessels: v, messages: msg, exported: new Date().toISOString(),
     }, null, 2));
     toast.success('Sauvegarde téléchargée');
   };
@@ -59,8 +55,7 @@ export default function Settings() {
     setSaving(true);
     const data = Object.fromEntries(FIELDS.map(([k]) => [k, k === 'next_number' ? Number(form[k] || 1) : form[k] || '']));
     if (form.stamp) data.stamp = form.stamp;
-    if (settings) await base44.entities.UnitSettings.update(settings.id, data);
-    else await base44.entities.UnitSettings.create(data);
+    await saveSettings(data);
     qc.invalidateQueries({ queryKey: ['settings'] });
     setSaving(false);
     toast.success('Paramètres enregistrés');

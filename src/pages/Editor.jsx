@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { db } from '@/lib/localDb';
 import { useSettings, useVessels } from '@/hooks/useUnit';
 import { MESSAGE_TYPES } from '@/lib/messageTypes';
 import { localISO, nowLocal } from '@/lib/format';
@@ -27,7 +27,7 @@ export default function Editor() {
   useEffect(() => {
     if (!settings || !vessels || !T) return;
     (async () => {
-      const src = id || from ? await base44.entities.Message.get(id || from) : null;
+      const src = id || from ? await db.messages.get(id || from) : null;
       const weekly = T.recipients === 'weekly';
       setHeader({
         number: id ? src.number : settings.next_number || 1,
@@ -50,10 +50,10 @@ export default function Editor() {
     setSaving(true);
     const data = { type, ...header, fields, vessel: fields.vessel || '' };
     let msgId = id;
-    if (id) await base44.entities.Message.update(id, data);
+    if (id) await db.messages.update(id, data);
     else {
-      msgId = (await base44.entities.Message.create({ ...data, status: 'brouillon' })).id;
-      await base44.entities.UnitSettings.update(settings.id, { next_number: header.number + 1 });
+      msgId = (await db.messages.create({ ...data, status: 'brouillon' })).id;
+      await db.settings.update(settings.id, { next_number: header.number + 1 });
     }
     qc.invalidateQueries();
     navigate(`/message/${msgId}`);

@@ -1,0 +1,11 @@
+{
+  "appId": "mg.disac.app",
+  "appName": "DISAC",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
