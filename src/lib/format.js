@@ -26,9 +26,10 @@ export function nowLocal() {
   return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 }
 
-export function weekRange() {
-  const day = (new Date().getDay() + 6) % 7;
-  return { monday: localISO(-day), sunday: localISO(6 - day) };
+export function weekRange(startDay = 1) {
+  const today = new Date().getDay();
+  const offset = (today - startDay + 7) % 7;
+  return { start: localISO(-offset), end: localISO(6 - offset) };
 }
 
 export const refLine = (m, s) =>

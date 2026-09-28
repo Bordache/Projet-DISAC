@@ -13,6 +13,7 @@ import MessageView from '@/pages/MessageView';
 import History from '@/pages/History';
 import Fleet from '@/pages/Fleet';
 import Settings from '@/pages/Settings';
+import Help from '@/pages/Help';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="/historique" element={<History />} />
               <Route path="/flotte" element={<Fleet />} />
               <Route path="/parametres" element={<Settings />} />
+              <Route path="/aide" element={<Help />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>

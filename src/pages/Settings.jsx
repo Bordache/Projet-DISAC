@@ -18,6 +18,9 @@ const FIELDS = [
   ['next_number', 'Prochain numéro NR'],
 ];
 
+const WEEK_DAYS = [['Dimanche', 0], ['Lundi', 1], ['Mardi', 2], ['Mercredi', 3], ['Jeudi', 4], ['Vendredi', 5], ['Samedi', 6]];
+const STAMP_POSITIONS = [['bottom-right', 'Bas à droite'], ['bottom-left', 'Bas à gauche'], ['bottom-center', 'Bas centré']];
+
 export default function Settings() {
   const { data: settings } = useSettings();
   const qc = useQueryClient();
@@ -55,6 +58,9 @@ export default function Settings() {
     setSaving(true);
     const data = Object.fromEntries(FIELDS.map(([k]) => [k, k === 'next_number' ? Number(form[k] || 1) : form[k] || '']));
     if (form.stamp) data.stamp = form.stamp;
+    data.week_start_day = Number(form.week_start_day ?? 5);
+    data.stamp_size = Number(form.stamp_size || 80);
+    data.stamp_position = form.stamp_position || 'bottom-right';
     await saveSettings(data);
     qc.invalidateQueries({ queryKey: ['settings'] });
     setSaving(false);
@@ -76,6 +82,17 @@ export default function Settings() {
       </form>
 
       <div className="mt-6 rounded-2xl border border-border bg-card p-6">
+        <h2 className="font-heading text-xl">Échéance des comptes-rendus</h2>
+        <p className="text-sm text-muted-foreground mt-1">Début de la semaine hebdomadaire. Les CR couvrent du jour choisi au jour précédent suivant (ex. vendredi → jeudi).</p>
+        <label className="block mt-4">
+          <span className="text-xs font-medium text-muted-foreground">Semaine du</span>
+          <select value={form.week_start_day ?? 5} onChange={(e) => setForm({ ...form, week_start_day: Number(e.target.value) })} className={inputCls}>
+            {WEEK_DAYS.map(([label, val]) => <option key={val} value={val}>{label}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-border bg-card p-6">
         <h2 className="font-heading text-xl">Cachet officiel</h2>
         <p className="text-sm text-muted-foreground mt-1">Apparaît sur chaque message et CR de mission.</p>
         <div className="mt-4 flex items-center gap-5">
@@ -86,6 +103,18 @@ export default function Settings() {
             {stampBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
             {form.stamp ? 'Remplacer' : 'Téléverser'}
             <input type="file" accept="image/*" className="hidden" onChange={uploadStamp} />
+          </label>
+        </div>
+        <div className="mt-5 grid sm:grid-cols-2 gap-4">
+          <label className="block">
+            <span className="text-xs font-medium text-muted-foreground">Taille du cachet (px)</span>
+            <input type="number" min="40" max="200" value={form.stamp_size ?? 80} onChange={(e) => setForm({ ...form, stamp_size: Number(e.target.value) })} className={inputCls} />
+          </label>
+          <label className="block">
+            <span className="text-xs font-medium text-muted-foreground">Position dans le message</span>
+            <select value={form.stamp_position ?? 'bottom-right'} onChange={(e) => setForm({ ...form, stamp_position: e.target.value })} className={inputCls}>
+              {STAMP_POSITIONS.map(([val, label]) => <option key={val} value={val}>{label}</option>)}
+            </select>
           </label>
         </div>
       </div>

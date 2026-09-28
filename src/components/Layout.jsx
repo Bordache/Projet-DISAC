@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, PenLine, Archive, Ship, Settings, Anchor } from 'lucide-react';
+import { LayoutDashboard, PenLine, Archive, Ship, Settings, Anchor, HelpCircle } from 'lucide-react';
 
 const NAV = [
   { to: '/', label: 'Tableau', icon: LayoutDashboard },
@@ -7,6 +7,7 @@ const NAV = [
   { to: '/historique', label: 'Historique', icon: Archive },
   { to: '/flotte', label: 'Flotte', icon: Ship },
   { to: '/parametres', label: 'Unité', icon: Settings },
+  { to: '/aide', label: 'Aide', icon: HelpCircle },
 ];
 
 const linkCls = ({ isActive }) =>

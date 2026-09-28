@@ -18,9 +18,9 @@ export default function MissionDoc({ message, settings }) {
           <div className="border-b border-foreground/60 mt-4" />
         </section>
       ))}
-      <div className="mt-10 ml-auto w-fit text-center">
+      <div className={`mt-10 ${s.stamp_position === 'bottom-left' ? 'mr-auto' : s.stamp_position === 'bottom-center' ? 'mx-auto' : 'ml-auto'} w-fit text-center`}>
         <div>Fait à {s.place}, le {fmtDate(message.date)}</div>
-        {s.stampUrl && <Image src={s.stampUrl} alt="Cachet" className="w-24 h-24 object-contain mx-auto mt-3" fittingType="fit" />}
+        {s.stampUrl && <Image src={s.stampUrl} alt="Cachet" style={{ width: `${s.stamp_size || 90}px`, height: `${s.stamp_size || 90}px` }} className="object-contain mx-auto mt-3" fittingType="fit" />}
         <div className="font-bold mt-3 uppercase">{s.commander}</div>
       </div>
     </div>
