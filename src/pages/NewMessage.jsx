@@ -12,7 +12,6 @@ export default function NewMessage() {
           <section key={g.key}>
             <div className="flex items-baseline gap-3 mb-4">
               <h2 className="font-heading text-xl">{g.title}</h2>
-              <!-- <span className="text-xs text-muted-foreground">{g.note}</span> -->
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {Object.entries(MESSAGE_TYPES).filter(([, t]) => t.group === g.key).map(([code, t]) => (
