@@ -75,17 +75,17 @@ export default function Help() {
             Pour toute question, suggestion ou signalement de dysfonctionnement, contactez le développeur :
           </p>
           <div className="mt-3 space-y-1 text-sm">
-            <div><span className="text-muted-foreground">Email : </span><a href="mailto:disac.support@dnfd.mil" className="text-primary underline">disac.support@dnfd.mil</a></div>
-            <div><span className="text-muted-foreground">Téléphone : </span>+261 32 00 000 00</div>
+            <div><span className="text-muted-foreground">Email : </span><a href="mailto:rakotonirina.bordache@gmail.com" className="text-primary underline">disac.support@dnfd.mil</a></div>
+            <div><span className="text-muted-foreground">Téléphone : </span>+261 34 08 972 39</div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Application DISAC — Registre des messages et comptes-rendus opérationnels du Détachement Naval.
+            Application DISAC (Version 1.0.0) — Registre des messages et comptes-rendus opérationnels — MARINE NATIONALE
           </p>
         </Section>
       </div>
 
       <footer className="mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-        © 2026 LTV RAKOTONIRINA Diary Androsoa. Tous droits réservés.
+        © 2026 Lieutenant de Vaisseau RAKOTONIRINA Diary Androsoa. Tous droits réservés.
       </footer>
     </div>
   );

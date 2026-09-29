@@ -41,7 +41,7 @@ export const MISSION_CHAPTERS = [
 
 export const MESSAGE_TYPES = {
   CRHAS: {
-    name: 'CRHAS', label: "CR hebdomadaire d'activités spécifiques", group: 'hebdo', due: 'Vendredi',
+    name: 'CRHAS', label: "CR hebdomadaire d'activités spécifiques", group: 'hebdo', due: 'Jeudi',
     recipients: 'weekly', classification: 'DIFFUSION RESTREINTE', urgency: 'URGENT',
     fields: [
       { key: 'week_from', label: 'Semaine du', type: 'date' }, { key: 'week_to', label: 'Au', type: 'date' },
@@ -61,7 +61,7 @@ export const MESSAGE_TYPES = {
     ],
   },
   CRHSBE: {
-    name: 'CRHSBE', label: 'CR hebdomadaire de situation des bâtiments et engins', group: 'hebdo', due: 'Lundi',
+    name: 'CRHSBE', label: 'CR hebdomadaire de situation des bâtiments et engins', group: 'hebdo', due: 'Jeudi',
     recipients: 'weekly', classification: 'DIFFUSION RESTREINTE', urgency: 'URGENT',
     fields: [
       { key: 'sit_date', label: 'Situation du', type: 'date' },
@@ -84,7 +84,7 @@ export const MESSAGE_TYPES = {
     ],
   },
   CRHTER: {
-    name: 'CRHTER', label: "CR hebdomadaire des travaux d'entretien et réparations", group: 'hebdo', due: 'Lundi',
+    name: 'CRHTER', label: "CR hebdomadaire des travaux d'entretien et réparations", group: 'hebdo', due: 'Jeudi',
     recipients: 'weekly', classification: 'DIFFUSION RESTREINTE', urgency: 'URGENT',
     fields: [
       { key: 'week_from', label: 'Semaine du', type: 'date' }, { key: 'week_to', label: 'Au', type: 'date' },
@@ -157,7 +157,7 @@ export const MESSAGE_TYPES = {
     ],
   },
   PROJORDMOUV: {
-    ...MOVE, name: 'PROJET ORDMOUV', label: "Projet d'ordre de mouvement",
+    ...MOVE, name: 'PROJET ORDMOUV', label: "Projet d'ordre de mouvement (Sortie > 4 h)",
     fields: [vesselField, ta('primo', 'PRIMO — Appareillage / Retour', 'Ex : APPAREILLAGE DE FORT-DAUPHIN LE 23/10/26 A 0500C'), ta('secundo', 'SECUNDO — Détail des mouvements, escales'), ta('tertio', 'TERTIO — Proposition de mission'), ta('quarto', 'QUARTO — Logistique technique et approvisionnement'), ta('quinto', 'QUINTO ET SEXTO — Transmission / Comptes-rendus', 'Ex : SELON REGLEMENTATION EN VIGUEUR')],
     initial: () => ({}),
     build: (f) => [

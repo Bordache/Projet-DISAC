@@ -49,7 +49,9 @@ export default function MessageSheet({ message, settings }) {
           <tr>
             <td className={`${cell} text-center w-1/3`}>Instruction à ne pas transmettre</td>
             <td className={`${cell} text-center w-1/3`}>Instruction pour le message</td>
-            <td rowSpan={2} className={cell}></td>
+            <td rowSpan={2} className={`${cell} align-bottom`}>
+              {s.stampUrl && <div className={`flex ${s.stamp_position === 'bottom-left' ? 'justify-start' : s.stamp_position === 'bottom-center' ? 'justify-center' : 'justify-end'}`}><Image src={s.stampUrl} alt="Cachet" style={{ width: `${s.stamp_size || 80}px`, height: `${s.stamp_size || 80}px` }} className="object-contain" fittingType="fit" /></div>}
+            </td>
           </tr>
           <tr className="h-28">
             <td className={cell}>Grade, nom et signature du rédacteur ou l'opérateur</td>
@@ -57,7 +59,6 @@ export default function MessageSheet({ message, settings }) {
               <div>{s.unit_name}</div>
               <div>Tel : {s.tel}</div>
               <div>Email : {s.email}</div>
-              {s.stampUrl && <div className={`mt-2 flex ${s.stamp_position === 'bottom-left' ? 'justify-start' : s.stamp_position === 'bottom-center' ? 'justify-center' : 'justify-end'}`}><Image src={s.stampUrl} alt="Cachet" style={{ width: `${s.stamp_size || 80}px`, height: `${s.stamp_size || 80}px` }} className="object-contain" fittingType="fit" /></div>}
             </td>
           </tr>
         </tbody>

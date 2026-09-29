@@ -17,7 +17,6 @@ export default function Dashboard() {
     <div className="space-y-10">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{settings?.origin || 'Commandant'}</div>
           <h1 className="font-heading text-4xl md:text-5xl tracking-tight mt-2">{settings?.unit_name || 'Tableau de bord'}</h1>
         </div>
         <Link to="/rediger" className="inline-flex items-center gap-2 self-start rounded-full bg-primary text-primary-foreground px-5 py-3 text-sm hover:opacity-90 transition">
