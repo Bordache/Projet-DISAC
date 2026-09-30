@@ -75,7 +75,7 @@ export default function Help() {
             Pour toute question, suggestion ou signalement de dysfonctionnement, contactez le développeur :
           </p>
           <div className="mt-3 space-y-1 text-sm">
-            <div><span className="text-muted-foreground">Email : </span><a href="mailto:rakotonirina.bordache@gmail.com" className="text-primary underline">disac.support@dnfd.mil</a></div>
+            <div><span className="text-muted-foreground">Email : </span><a href="mailto:rakotonirina.bordache@gmail.com" className="text-primary underline">rakotonirina.bordache@gmail.com</a></div>
             <div><span className="text-muted-foreground">Téléphone : </span>+261 34 08 972 39</div>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
