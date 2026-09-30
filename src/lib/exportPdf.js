@@ -13,18 +13,20 @@ async function elementToPdf(element) {
   const pdf = new jsPDF('p', 'mm', 'a4');
   const pageW = 210;
   const pageH = 297;
-  const imgW = pageW;
-  const imgH = (canvas.height * imgW) / canvas.width;
+  const margin = 10;
+  const contentW = pageW - 2 * margin;
+  const usableH = pageH - 2 * margin;
+  const imgH = (canvas.height * contentW) / canvas.width;
   const imgData = canvas.toDataURL('image/png');
   let heightLeft = imgH;
-  let position = 0;
-  pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH);
-  heightLeft -= pageH;
+  let position = margin;
+  pdf.addImage(imgData, 'PNG', margin, position, contentW, imgH);
+  heightLeft -= usableH;
   while (heightLeft > 0) {
-    position -= pageH;
+    position = margin - (imgH - heightLeft);
     pdf.addPage();
-    pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH);
-    heightLeft -= pageH;
+    pdf.addImage(imgData, 'PNG', margin, position, contentW, imgH);
+    heightLeft -= usableH;
   }
   return pdf;
 }
